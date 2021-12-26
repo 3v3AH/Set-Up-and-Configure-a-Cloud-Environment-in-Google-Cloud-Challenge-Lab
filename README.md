@@ -1,5 +1,5 @@
 # Set-Up-and-Configure-a-Cloud-Environment-in-Google-Cloud-Challenge-Lab
-#####################################################################################################
+
 
 Task 1: Create development VPC manually
 -------------------------------------------
@@ -11,7 +11,6 @@ gcloud compute networks subnets create griffin-dev-wp --network=griffin-dev-vpc 
 gcloud compute networks subnets create griffin-dev-mgmt --network=griffin-dev-vpc --region us-east1 --range=192.168.32.0/20
 
 
-#####################################################################################################
 
 Task 2: Create production VPC manually
 --------------------------------------------
@@ -28,7 +27,6 @@ gcloud deployment-manager deployments create prod-network \
 
 cd ..
 
-#####################################################################################################
 
 Task 3: Create bastion host
 --------------------------------
@@ -48,12 +46,12 @@ gcloud compute firewall-rules create fw-ssh-dev --source-ranges=0.0.0.0/0 --targ
 
 gcloud compute firewall-rules create fw-ssh-prod --source-ranges=0.0.0.0/0 --target-tags ssh --allow=tcp:22 --network=griffin-prod-vpc
 
-####################################################################################################
 
 Task 4: Create and configure Cloud SQL Instance
 -------------------------------------------------
 
 gcloud sql instances create griffin-dev-db --root-password password --region=us-east1
+**************************************************************************************
 
 gcloud sql connect griffin-dev-db
 *************************************************************************************
@@ -65,11 +63,10 @@ FLUSH PRIVILEGES;
 *************************************************************************************
 exit
 
-####################################################################################################
 
 Task 5: Create Kubernetes cluster
 -------------------------------------
-
+***************************************************************************************
 gcloud container clusters create griffin-dev \
 
   --network griffin-dev-vpc \
@@ -81,7 +78,7 @@ gcloud container clusters create griffin-dev \
   --num-nodes 2  \
   
   --zone us-east1-b
-
+****************************************************************************************
 
 gcloud container clusters get-credentials griffin-dev --zone us-east1-b
 
@@ -89,7 +86,6 @@ cd ~/
 
 gsutil cp -r gs://cloud-training/gsp321/wp-k8s .
 
-##############################################################################################
 
 Task 6: Prepare the Kubernetes cluster
 --------------------------------------------
@@ -106,16 +102,16 @@ cd wp-k8s
 
 kubectl create -f wp-env.yaml
 
-------------------------------------------------------------------------------------------------------
+*****************************************************************************************************
 gcloud iam service-accounts keys create key.json \
 
     --iam-account=cloud-sql-proxy@$GOOGLE_CLOUD_PROJECT.iam.gserviceaccount.com
+******************************************************************************************************
     
 kubectl create secret generic cloudsql-instance-credentials \
 
     --from-file key.json
     
-############################################################################################################
 
 Task 7: Create a WordPress deployment
 -----------------------------------------
@@ -128,7 +124,6 @@ kubectl create -f wp-deployment.yaml
 
 kubectl create -f wp-service.yaml
 
-###########################################################################################################
 
 Task 8: Enable monitoring
 --------------------------------------
@@ -146,7 +141,6 @@ Next -> Target
    Path : /
 
 Next -> Next -> Create
-###########################################################################################################
 
 Task 9: Provide access for an additional engineer
 -----------------------------------------------------
