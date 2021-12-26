@@ -2,6 +2,7 @@
 #####################################################################################################
 
 Task 1: Create development VPC manually
+-------------------------------------------
 
 gcloud compute networks create griffin-dev-vpc --subnet-mode custom
 
@@ -13,6 +14,7 @@ gcloud compute networks subnets create griffin-dev-mgmt --network=griffin-dev-vp
 #####################################################################################################
 
 Task 2: Create production VPC manually
+--------------------------------------------
 
 gsutil cp -r gs://cloud-training/gsp321/dm .
 
@@ -29,6 +31,7 @@ cd ..
 #####################################################################################################
 
 Task 3: Create bastion host
+--------------------------------
 
 gcloud compute instances create bastion \
 
@@ -39,6 +42,7 @@ gcloud compute instances create bastion \
 --tags=ssh \
 
 --zone=us-east1-b
+
 ------------------------------------------------------------------------------------------------------------
 gcloud compute firewall-rules create fw-ssh-dev --source-ranges=0.0.0.0/0 --target-tags ssh --allow=tcp:22 --network=griffin-dev-vpc
 
@@ -47,6 +51,7 @@ gcloud compute firewall-rules create fw-ssh-prod --source-ranges=0.0.0.0/0 --tar
 ####################################################################################################
 
 Task 4: Create and configure Cloud SQL Instance
+-------------------------------------------------
 
 gcloud sql instances create griffin-dev-db --root-password password --region=us-east1
 
@@ -63,6 +68,7 @@ exit
 ####################################################################################################
 
 Task 5: Create Kubernetes cluster
+-------------------------------------
 
 gcloud container clusters create griffin-dev \
 
@@ -86,6 +92,7 @@ gsutil cp -r gs://cloud-training/gsp321/wp-k8s .
 ##############################################################################################
 
 Task 6: Prepare the Kubernetes cluster
+--------------------------------------------
 
 Open Editor -> wp-k8s -> wp-env.yaml Change username and password to:
 
@@ -98,6 +105,7 @@ Save.
 cd wp-k8s
 
 kubectl create -f wp-env.yaml
+
 ------------------------------------------------------------------------------------------------------
 gcloud iam service-accounts keys create key.json \
 
@@ -110,6 +118,7 @@ kubectl create secret generic cloudsql-instance-credentials \
 ############################################################################################################
 
 Task 7: Create a WordPress deployment
+-----------------------------------------
 
 In editor: wp-deployment.yaml -> replace YOUR_SQL_INSTANCE with griffin-dev-db.
 
@@ -119,9 +128,10 @@ kubectl create -f wp-deployment.yaml
 
 kubectl create -f wp-service.yaml
 
-#############################################################################################################
+###########################################################################################################
 
 Task 8: Enable monitoring
+--------------------------------------
 
 Navigation Menu -> Kubernetes Engine -> Services and Ingress -> Copy Endpoint's address.
 
@@ -136,9 +146,10 @@ Next -> Target
    Path : /
 
 Next -> Next -> Create
-#############################################################################################################
+###########################################################################################################
 
 Task 9: Provide access for an additional engineer
+-----------------------------------------------------
 
 Navigation Menu -> IAM & Admin -> IAM -> ADD
 
